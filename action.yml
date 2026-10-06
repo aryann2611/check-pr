@@ -1,0 +1,14 @@
+name: Check commit messages
+description: Validate every commit message of a pull request as a Conventional Commit, using the GitHub REST API
+inputs:
+  token:
+    description: Token used to read the pull request's commits
+    default: ${{ github.token }}
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: node "$GITHUB_ACTION_PATH/bin/check-pr.js" "$GITHUB_REPOSITORY" "$PR_NUMBER"
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
